@@ -40,8 +40,77 @@ const addNewVisitor = async(name,assistant,age,date,time,comments) => {
         // await client.end()
 	}
   }
+  const listVisitors = async() => {
+  
+    const sql='SELECT visitor_id, visitor_name FROM visitors';
+    try {
+      query = await client.query(sql)
+      return query.rows
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
+  const deleteVisitor = async(visitor_id) => {
+  
+    const sql='DELETE FROM visitors WHERE visitor_id=$1';
+    const values= 
+      [visitor_id];
+      
+      try {
+        query = await client.query(sql,values)
+        return query
+      } catch(e) {
+        console.log(e);
+      }
+  }
+
+  const updateVisitor = async(id,name,age,date,time,assistant,comments) => {
+  
+    const sql='UPDATE visitors SET visitor_name=$2,visitor_age=$3,date_of_visit=$4,time_of_visit=$5,assistant=$6,comments=$7 WHERE visitor_id =$1';
+    const values= 
+      [id,name,age,date,time,assistant,comments];
+    
+      
+      try {
+       let query = await client.query(sql,values)
+        return query
+      } catch(e) {
+        console.log(e);
+      }
+  }
+
+  const viewVisitor = async(visitor_id) => {
+  
+    const sql='SELECT * FROM visitors WHERE visitor_id = $1';
+    const values= [visitor_id]
+    try {
+      query = await client.query(sql,values)
+      return query.rows
+    } catch(e) {
+      console.log(e);
+    }
+  }
+  const deleteAllVisitor = async() => {
+  
+    const sql='DELETE FROM visitors';
+      
+    try {
+      query = await client.query(sql)
+      console.log(query.rows)
+      await client.end()
+      return query.rows
+    } catch(e) {
+      console.log(e);
+      await client.end()
+    }
+  }
 module.exports ={
     addNewVisitor,
-    createTable
+    createTable,
+    listVisitors,
+    deleteVisitor,
+    updateVisitor,
+    viewVisitor,
+    deleteAllVisitor
 }

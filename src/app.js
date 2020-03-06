@@ -1,9 +1,15 @@
 const express = require('express');
 const path = require("path");
-// const pug = require('pug');
+
 const bodyParser = require("body-parser");
 const app = express();
-const {addNewVisitor, createTable} = require("./db");
+const {addNewVisitor, 
+   createTable,
+   listVisitors,
+   deleteVisitor,
+   updateVisitor,
+   viewVisitor,
+   deleteAllVisitor} = require("./db");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -11,11 +17,6 @@ app.use(express.urlencoded({extended: true}));
 app.use('/new_visitor', express.static('public'));
 
 app.set('view engine', 'pug')
-// app.set('views', path.join(__dirname, 'views'))
-
-// app.get('/', function (req,res){
-//    res.render('index')
-// })
 
 app.get('/new_visitor', function (req, res) {
    res.sendFile(path.join(__dirname + "/index.html" ));
